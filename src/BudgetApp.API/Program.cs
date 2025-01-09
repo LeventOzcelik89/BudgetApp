@@ -1,8 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using BudgetApp.API.Data;
+using BudgetApp.API.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// DbContext'i ekle
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Repository'leri kaydet
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 var app = builder.Build();
 
