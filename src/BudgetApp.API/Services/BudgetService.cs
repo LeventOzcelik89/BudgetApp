@@ -4,6 +4,7 @@ using AutoMapper;
 using BudgetApp.API.Data.Repositories;
 using BudgetApp.API.DTOs.Budget;
 using BudgetApp.API.Models;
+using BudgetApp.API.Models.Enums;
 
 public class BudgetService : IBudgetService
 {
@@ -31,10 +32,16 @@ public class BudgetService : IBudgetService
 
         foreach (var budgetDto in budgetDtos)
         {
-            var transactions = await _transactionRepository.GetByUserIdAndCategoryAsync(userId, budgetDto.CategoryId);
-            budgetDto.ActualAmount = transactions
-                .Where(t => t.TransactionDate >= budgetDto.StartDate && t.TransactionDate <= budgetDto.EndDate)
-                .Sum(t => t.Amount);
+            var transactions = await _transactionRepository.GetByUserIdAndCategoryIdAsync(userId, budgetDto.CategoryId);
+            var totalSpent = transactions
+                .Where(t => t.Type == TransactionType.Expense && 
+                       t.TransactionDate >= budgetDto.StartDate && 
+                       t.TransactionDate <= budgetDto.EndDate)
+                .Sum(t => t.ConvertedAmount);
+
+            budgetDto.SpentAmount = totalSpent;
+            budgetDto.RemainingAmount = budgetDto.PlannedAmount - totalSpent;
+            budgetDto.SpentPercentage = budgetDto.PlannedAmount > 0 ? (totalSpent / budgetDto.PlannedAmount) * 100 : 0;
         }
 
         return budgetDtos;
@@ -46,36 +53,45 @@ public class BudgetService : IBudgetService
         if (budget == null || budget.UserId != userId)
             throw new Exception("Budget not found");
 
-        var budgetDto = _mapper.Map<BudgetDto>(budget);
-        var transactions = await _transactionRepository.GetByUserIdAndCategoryAsync(userId, budget.CategoryId);
-        budgetDto.ActualAmount = transactions
-            .Where(t => t.TransactionDate >= budget.StartDate && t.TransactionDate <= budget.EndDate)
-            .Sum(t => t.Amount);
+        var transactions = await _transactionRepository.GetByUserIdAndCategoryIdAsync(userId, budget.CategoryId);
+        var totalSpent = transactions
+            .Where(t => t.Type == TransactionType.Expense)
+            .Sum(t => t.ConvertedAmount);
 
-        return budgetDto;
+        var dto = _mapper.Map<BudgetDto>(budget);
+        dto.SpentAmount = totalSpent;
+        dto.RemainingAmount = budget.PlannedAmount - totalSpent;
+        dto.SpentPercentage = budget.PlannedAmount > 0 ? (totalSpent / budget.PlannedAmount) * 100 : 0;
+
+        return dto;
     }
 
     public async Task<BudgetSummaryDto> GetSummaryAsync(int userId, DateTime date)
     {
-        var activeBudgets = await _budgetRepository.GetActiveBudgetsAsync(userId, date);
-        var budgetDtos = new List<BudgetDto>();
+        var budgets = await _budgetRepository.GetByUserIdAsync(userId);
+        var summary = new BudgetSummaryDto { Budgets = new List<BudgetDto>() };
 
-        foreach (var budget in activeBudgets)
+        foreach (var budget in budgets)
         {
-            var budgetDto = _mapper.Map<BudgetDto>(budget);
-            var transactions = await _transactionRepository.GetByUserIdAndCategoryAsync(userId, budget.CategoryId);
-            budgetDto.ActualAmount = transactions
-                .Where(t => t.TransactionDate >= budget.StartDate && t.TransactionDate <= budget.EndDate)
-                .Sum(t => t.Amount);
-            budgetDtos.Add(budgetDto);
+            if (date < budget.StartDate || date > budget.EndDate)
+                continue;
+
+            var transactions = await _transactionRepository.GetByUserIdAndCategoryIdAsync(userId, budget.CategoryId);
+            var totalSpent = transactions
+                .Where(t => t.Type == TransactionType.Expense && 
+                       t.TransactionDate >= budget.StartDate && 
+                       t.TransactionDate <= budget.EndDate)
+                .Sum(t => t.ConvertedAmount);
+
+            var dto = _mapper.Map<BudgetDto>(budget);
+            dto.SpentAmount = totalSpent;
+            dto.RemainingAmount = budget.PlannedAmount - totalSpent;
+            dto.SpentPercentage = budget.PlannedAmount > 0 ? (totalSpent / budget.PlannedAmount) * 100 : 0;
+
+            summary.Budgets.Add(dto);
         }
 
-        return new BudgetSummaryDto
-        {
-            TotalPlannedAmount = budgetDtos.Sum(b => b.PlannedAmount),
-            TotalActualAmount = budgetDtos.Sum(b => b.ActualAmount),
-            Budgets = budgetDtos
-        };
+        return summary;
     }
 
     public async Task<BudgetDto> CreateAsync(int userId, CreateBudgetDto dto)
@@ -115,4 +131,5 @@ public class BudgetService : IBudgetService
 
         await _budgetRepository.DeleteAsync(budgetId);
     }
+
 } 

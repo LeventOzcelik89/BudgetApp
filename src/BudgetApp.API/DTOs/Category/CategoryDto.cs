@@ -1,3 +1,4 @@
+using BudgetApp.API.Models.Enums;
 namespace BudgetApp.API.DTOs.Category;
 
 public class CategoryDto

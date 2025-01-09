@@ -40,4 +40,13 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
             .OrderByDescending(t => t.TransactionDate)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Transaction>> GetByUserIdAndCategoryIdAsync(int userId, int categoryId)
+    {
+        return await _dbSet
+            .Where(t => t.UserId == userId && t.CategoryId == categoryId && !t.IsDeleted)
+            .Include(t => t.Category)
+            .Include(t => t.Currency)
+            .ToListAsync();
+    }
 } 

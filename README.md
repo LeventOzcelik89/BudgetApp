@@ -87,18 +87,4 @@ Bu projeye katkıda bulunan herkese teşekkür ederiz!
 
 github adresi: https://github.com/LeventOzcelik89/BudgetApp
 
-Temel Klasör Yapısı:
-BudgetApp/
-├── .gitignore
-├── BudgetApp.sln
-├── README.md
-└── src/
-    └── BudgetApp.API/
-        ├── Controllers/
-        ├── Models/
-        ├── Data/
-        ├── Services/
-        ├── DTOs/
-        ├── Middlewares/
-        ├── Extensions/
-        └── Program.cs
+

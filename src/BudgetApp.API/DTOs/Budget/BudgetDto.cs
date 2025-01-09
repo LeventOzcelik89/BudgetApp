@@ -6,10 +6,11 @@ public class BudgetDto
     public int CategoryId { get; set; }
     public string CategoryName { get; set; }
     public decimal PlannedAmount { get; set; }
-    public decimal ActualAmount { get; set; }
+    public decimal SpentAmount { get; set; }
+    public decimal RemainingAmount { get; set; }
+    public decimal SpentPercentage { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public decimal Progress => ActualAmount / PlannedAmount * 100;
 }
 
 public class CreateBudgetDto
@@ -29,8 +30,9 @@ public class UpdateBudgetDto
 
 public class BudgetSummaryDto
 {
-    public decimal TotalPlannedAmount { get; set; }
-    public decimal TotalActualAmount { get; set; }
-    public decimal TotalProgress => TotalActualAmount / TotalPlannedAmount * 100;
-    public List<BudgetDto> Budgets { get; set; }
+    public decimal TotalPlannedAmount => Budgets?.Sum(b => b.PlannedAmount) ?? 0;
+    public decimal TotalSpentAmount => Budgets?.Sum(b => b.SpentAmount) ?? 0;
+    public decimal TotalRemainingAmount => TotalPlannedAmount - TotalSpentAmount;
+    public decimal TotalSpentPercentage => TotalPlannedAmount > 0 ? (TotalSpentAmount / TotalPlannedAmount) * 100 : 0;
+    public List<BudgetDto> Budgets { get; set; } = new();
 } 

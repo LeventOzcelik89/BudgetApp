@@ -14,6 +14,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Budget> Budgets { get; set; }
+    public DbSet<Goal> Goals { get; set; }
+    public DbSet<Device> Devices { get; set; }
+    public DbSet<UserSettings> UserSettings { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,8 +50,124 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Transaction>()
-            .Property(t => t.Amount)
+            .HasOne(t => t.Currency)
+            .WithMany()
+            .HasForeignKey(t => t.CurrencyCode)
+            .HasPrincipalKey(c => c.Code)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Transaction>()
+            .Property(t => t.OriginalAmount)
             .HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<Transaction>()
+            .Property(t => t.ConvertedAmount)
+            .HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<Transaction>()
+            .Property(t => t.ExchangeRate)
+            .HasColumnType("decimal(18,6)");
+
+        // Budget configurations
+        modelBuilder.Entity<Budget>()
+            .HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Budget>()
+            .HasOne(b => b.Category)
+            .WithMany()
+            .HasForeignKey(b => b.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Budget>()
+            .Property(b => b.PlannedAmount)
+            .HasColumnType("decimal(18,2)");
+
+        // Goal configurations
+        modelBuilder.Entity<Goal>()
+            .HasOne(g => g.User)
+            .WithMany()
+            .HasForeignKey(g => g.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Goal>()
+            .HasOne(g => g.Category)
+            .WithMany()
+            .HasForeignKey(g => g.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Goal>()
+            .Property(g => g.TargetAmount)
+            .HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<Goal>()
+            .Property(g => g.CurrentAmount)
+            .HasColumnType("decimal(18,2)");
+
+        // Device configurations
+        modelBuilder.Entity<Device>()
+            .HasOne(d => d.User)
+            .WithMany()
+            .HasForeignKey(d => d.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Device>()
+            .HasIndex(d => d.DeviceToken)
+            .IsUnique();
+
+        // UserSettings configurations
+        modelBuilder.Entity<UserSettings>()
+            .HasOne(s => s.User)
+            .WithOne()
+            .HasForeignKey<UserSettings>(s => s.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserSettings>()
+            .Property(s => s.NotificationPreferencesJson)
+            .HasColumnType("nvarchar(max)");
+
+        modelBuilder.Entity<UserSettings>()
+            .Property(s => s.BudgetPreferencesJson)
+            .HasColumnType("nvarchar(max)");
+
+        // Currency configurations
+        modelBuilder.Entity<Currency>()
+            .HasIndex(c => c.Code)
+            .IsUnique();
+
+        // Seed data for currencies
+        modelBuilder.Entity<Currency>().HasData(
+            new Currency { Id = 1, Code = "USD", Name = "US Dollar", Symbol = "$", Flag = "🇺🇸", DisplayOrder = 1 },
+            new Currency { Id = 2, Code = "EUR", Name = "Euro", Symbol = "€", Flag = "🇪🇺", DisplayOrder = 2 },
+            new Currency { Id = 3, Code = "TRY", Name = "Turkish Lira", Symbol = "₺", Flag = "🇹🇷", DisplayOrder = 3 },
+            new Currency { Id = 4, Code = "GBP", Name = "British Pound", Symbol = "£", Flag = "🇬🇧", DisplayOrder = 4 },
+            new Currency { Id = 5, Code = "JPY", Name = "Japanese Yen", Symbol = "¥", Flag = "🇯🇵", DisplayOrder = 5 },
+            new Currency { Id = 6, Code = "CNY", Name = "Chinese Yuan", Symbol = "¥", Flag = "🇨🇳", DisplayOrder = 6 },
+            new Currency { Id = 7, Code = "AUD", Name = "Australian Dollar", Symbol = "$", Flag = "🇦🇺", DisplayOrder = 7 },
+            new Currency { Id = 8, Code = "CAD", Name = "Canadian Dollar", Symbol = "$", Flag = "🇨🇦", DisplayOrder = 8 },
+            new Currency { Id = 9, Code = "CHF", Name = "Swiss Franc", Symbol = "Fr", Flag = "🇨🇭", DisplayOrder = 9 },
+            new Currency { Id = 10, Code = "HKD", Name = "Hong Kong Dollar", Symbol = "$", Flag = "🇭🇰", DisplayOrder = 10 },
+            new Currency { Id = 11, Code = "NZD", Name = "New Zealand Dollar", Symbol = "$", Flag = "🇳🇿", DisplayOrder = 11 },
+            new Currency { Id = 12, Code = "SEK", Name = "Swedish Krona", Symbol = "kr", Flag = "🇸🇪", DisplayOrder = 12 },
+            new Currency { Id = 13, Code = "KRW", Name = "South Korean Won", Symbol = "₩", Flag = "🇰🇷", DisplayOrder = 13 },
+            new Currency { Id = 14, Code = "SGD", Name = "Singapore Dollar", Symbol = "$", Flag = "🇸🇬", DisplayOrder = 14 },
+            new Currency { Id = 15, Code = "NOK", Name = "Norwegian Krone", Symbol = "kr", Flag = "🇳🇴", DisplayOrder = 15 },
+            new Currency { Id = 16, Code = "MXN", Name = "Mexican Peso", Symbol = "$", Flag = "🇲🇽", DisplayOrder = 16 },
+            new Currency { Id = 17, Code = "INR", Name = "Indian Rupee", Symbol = "₹", Flag = "🇮🇳", DisplayOrder = 17 },
+            new Currency { Id = 18, Code = "RUB", Name = "Russian Ruble", Symbol = "₽", Flag = "🇷🇺", DisplayOrder = 18 },
+            new Currency { Id = 19, Code = "ZAR", Name = "South African Rand", Symbol = "R", Flag = "🇿🇦", DisplayOrder = 19 },
+            new Currency { Id = 20, Code = "BRL", Name = "Brazilian Real", Symbol = "R$", Flag = "🇧🇷", DisplayOrder = 20 }
+        );
+
+        // UserSettings configurations
+        modelBuilder.Entity<UserSettings>()
+            .HasOne(s => s.CurrencyInfo)
+            .WithMany()
+            .HasForeignKey(s => s.CurrencyCode)
+            .HasPrincipalKey(c => c.Code)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

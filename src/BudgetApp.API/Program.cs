@@ -92,6 +92,40 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 // Repository registrations
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+
+// Service registrations
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+
+// Service registrations
+builder.Services.AddScoped<IReportService, ReportService>();
+
+// Repository registrations
+builder.Services.AddScoped<IGoalRepository, GoalRepository>();
+
+// Service registrations
+builder.Services.AddScoped<IGoalService, GoalService>();
+
+// Repository registrations
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+
+// Service registrations
+builder.Services.AddScoped<IDeviceService, DeviceService>();
+
+// Push notification service
+builder.Services.AddScoped<IPushNotificationService, FirebasePushNotificationService>();
+
+// Repository registrations
+builder.Services.AddScoped<IUserSettingsRepository, UserSettingsRepository>();
+
+// Repository registrations
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+
+// Service registrations
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
+// Service registrations
+builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 
 var app = builder.Build();
 
@@ -110,3 +144,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
