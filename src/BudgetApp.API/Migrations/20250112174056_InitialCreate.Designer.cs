@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetApp.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250109091848_AddCurrencyAndUserSettings")]
-    partial class AddCurrencyAndUserSettings
+    [Migration("20250112174056_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -500,21 +500,31 @@ namespace BudgetApp.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("ConvertedAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("ExchangeRate")
+                        .HasColumnType("decimal(18,6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("OriginalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
@@ -531,6 +541,8 @@ namespace BudgetApp.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CurrencyCode");
 
                     b.HasIndex("UserId");
 
@@ -586,6 +598,20 @@ namespace BudgetApp.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            IsDeleted = false,
+                            LastName = "Admin",
+                            PasswordHash = "0RliDGV36n4zhibHsZF/wcGBPTAdGpjYhHVMZ3uM4MR4o0UKkhbtY8KrdIw8PeQiRpbo9VOMvvSkKyX1u3n/cA==",
+                            PasswordSalt = "grAyrNbHlCLK7ioqCs20kbCrDuqzh6u8FnNPZ4Ulcz3u2ynYNJN5FGerGDlxYVKE8DduF0KGa5k6GKDxVl94RT/0+UhKxHksl/wbfnJqU2zHU/clKI7iLTJAW1K6HQwATBRk240aK1RbGhByR5v62jsCELJOz46bNtrhuxmGi50="
+                        });
                 });
 
             modelBuilder.Entity("BudgetApp.API.Models.UserSettings", b =>
@@ -704,6 +730,13 @@ namespace BudgetApp.API.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("BudgetApp.API.Models.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyCode")
+                        .HasPrincipalKey("Code")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BudgetApp.API.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -711,6 +744,8 @@ namespace BudgetApp.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("User");
                 });

@@ -595,6 +595,20 @@ namespace BudgetApp.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            IsDeleted = false,
+                            LastName = "Admin",
+                            PasswordHash = "0RliDGV36n4zhibHsZF/wcGBPTAdGpjYhHVMZ3uM4MR4o0UKkhbtY8KrdIw8PeQiRpbo9VOMvvSkKyX1u3n/cA==",
+                            PasswordSalt = "grAyrNbHlCLK7ioqCs20kbCrDuqzh6u8FnNPZ4Ulcz3u2ynYNJN5FGerGDlxYVKE8DduF0KGa5k6GKDxVl94RT/0+UhKxHksl/wbfnJqU2zHU/clKI7iLTJAW1K6HQwATBRk240aK1RbGhByR5v62jsCELJOz46bNtrhuxmGi50="
+                        });
                 });
 
             modelBuilder.Entity("BudgetApp.API.Models.UserSettings", b =>

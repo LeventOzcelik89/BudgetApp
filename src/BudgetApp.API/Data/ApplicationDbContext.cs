@@ -3,6 +3,7 @@ namespace BudgetApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using BudgetApp.API.Models;
 using BudgetApp.API.Models.Common;
+using BudgetApp.API.Services;
 
 public class ApplicationDbContext : DbContext
 {
@@ -137,6 +138,36 @@ public class ApplicationDbContext : DbContext
             .HasIndex(c => c.Code)
             .IsUnique();
 
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 1,
+                FirstName = "Admin",
+                LastName = "Admin",
+                Email = "admin@admin.com",
+                PasswordHash = "0RliDGV36n4zhibHsZF/wcGBPTAdGpjYhHVMZ3uM4MR4o0UKkhbtY8KrdIw8PeQiRpbo9VOMvvSkKyX1u3n/cA==",
+                PasswordSalt = "grAyrNbHlCLK7ioqCs20kbCrDuqzh6u8FnNPZ4Ulcz3u2ynYNJN5FGerGDlxYVKE8DduF0KGa5k6GKDxVl94RT/0+UhKxHksl/wbfnJqU2zHU/clKI7iLTJAW1K6HQwATBRk240aK1RbGhByR5v62jsCELJOz46bNtrhuxmGi50=",
+                CreatedAt = DateTime.Now,
+                EmailConfirmed = true,
+                IsDeleted = false
+            }
+        );
+
+        modelBuilder.Entity<UserSettings>().HasData(
+            new UserSettings
+            {
+                Id = 1,
+                UserId = 1,
+                CurrencyCode = "TRY",
+                Language = "tr",
+                TimeZone = "Europe/Istanbul",
+                NotificationPreferencesJson = @"{""EnablePushNotifications"":true,""EnableEmailNotifications"":true,""NotifyOnBudgetExceeded"":true,""NotifyOnGoalProgress"":true,""NotifyOnLargeTransactions"":true,""LargeTransactionThreshold"":1000}",
+                BudgetPreferencesJson = @"{""AutomaticallyCategorizeTransactions"":true,""WarnWhenBudgetExceeds"":true,""WarnAtPercentage"":80,""RolloverUnusedBudget"":false}",
+                CreatedAt = DateTime.Now,
+                IsDeleted = false
+            }
+        );
+
         // Seed data for currencies
         modelBuilder.Entity<Currency>().HasData(
             new Currency { Id = 1, Code = "USD", Name = "US Dollar", Symbol = "$", Flag = "🇺🇸", DisplayOrder = 1 },
@@ -194,4 +225,4 @@ public class ApplicationDbContext : DbContext
 
         return base.SaveChangesAsync(cancellationToken);
     }
-} 
+}

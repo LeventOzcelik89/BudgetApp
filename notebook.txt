@@ -1,0 +1,40 @@
+# Değişiklikleri staged'e ekle
+git add .
+
+# Commit oluştur
+git commit -m "feat: Add multi-currency support for transactions
+
+- Added Currency entity and related configurations
+- Added UserSettings with currency preferences
+- Updated Transaction model with currency support
+- Added currency conversion support in TransactionService
+- Added currency information to transaction summaries"
+
+# Remote'a push
+git push origin main
+
+
+------------------------------------------------------------------------------------------------
+
+rm -r Migrations    --  Tüm migration klasörünü siler.
+dotnet ef migrations add InitialCreate
+dotnet ef migrations add AddCurrencySupport
+dotnet ef database update
+
+
+------------------------------------------------------------------------------------------------
+
+İleriki aşamalarda eklenebilecek özellikler:
+1. Döviz kuru servisi entegrasyonu
+2. Dosya upload/download işlemleri (makbuz, fatura vb.)
+3. Excel/PDF export
+4. Email servisi
+5. Cache mekanizması
+6. Logging mekanizması
+7. Unit testler
+8. API documentation (Swagger)
+
+
+
+D:\Projects\BudgetApp\BudgetApp> npm run android
+D:\Projects\BudgetApp\src\BudgetApp.API> dotnet run 

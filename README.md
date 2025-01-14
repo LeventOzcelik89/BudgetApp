@@ -88,3 +88,44 @@ Bu projeye katkıda bulunan herkese teşekkür ederiz!
 github adresi: https://github.com/LeventOzcelik89/BudgetApp
 
 
+
+src/
+├── api/
+│   ├── axios.ts
+│   ├── auth.ts
+│   ├── transactions.ts
+│   ├── categories.ts
+│   └── budgets.ts
+├── components/
+│   ├── common/
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   └── Loading.tsx
+│   ├── auth/
+│   │   ├── LoginForm.tsx
+│   │   └── RegisterForm.tsx
+│   └── transaction/
+│       ├── TransactionList.tsx
+│       └── TransactionCard.tsx
+├── screens/
+│   ├── auth/
+│   │   ├── LoginScreen.tsx
+│   │   └── RegisterScreen.tsx
+│   ├── dashboard/
+│   │   └── DashboardScreen.tsx
+│   └── transactions/
+│       └── TransactionsScreen.tsx
+├── store/
+│   ├── index.ts
+│   ├── authSlice.ts
+│   └── transactionSlice.ts
+├── navigation/
+│   ├── AppNavigator.tsx
+│   └── AuthNavigator.tsx
+├── hooks/
+│   └── useAuth.ts
+├── utils/
+│   ├── currency.ts
+│   └── date.ts
+└── types/
+    └── index.ts

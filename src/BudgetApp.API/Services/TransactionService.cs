@@ -2,12 +2,10 @@ namespace BudgetApp.API.Services;
 
 using AutoMapper;
 using BudgetApp.API.Data.Repositories;
+using BudgetApp.API.DTOs.Settings;
 using BudgetApp.API.DTOs.Transaction;
 using BudgetApp.API.Models;
 using BudgetApp.API.Models.Enums;
-using BudgetApp.API.DTOs.Settings;
-using BudgetApp.API.DTOs.Category;
-using BudgetApp.API.DTOs.Currency;
 
 public class TransactionService : ITransactionService
 {

@@ -134,4 +134,4 @@ public class NotificationService : INotificationService
             Type = NotificationType.TransactionAlert
         });
     }
-} 
+}
