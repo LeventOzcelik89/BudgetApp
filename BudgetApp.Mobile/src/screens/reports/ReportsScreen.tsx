@@ -79,37 +79,19 @@ export const ReportsScreen = () => {
         <Card.Content>
           <Text style={styles.cardTitle}>Trend</Text>
           <LineChart
-            data={{
-              labels: reportType === 'monthly' 
-                ? ['1.Hafta', '2.Hafta', '3.Hafta', '4.Hafta']
-                : ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-              datasets: [
-                {
-                  data: currentReport?.trends || [],
-                  color: (opacity = 1) => theme.colors.primary,
-                },
-              ],
-            }}
-            width={screenWidth - 48}
+            data={currentReport?.trends.map((value, index) => ({ x: index + 1, y: value }))}
+            width={screenWidth}
             height={220}
             chartConfig={{
-              backgroundColor: theme.colors.surface,
-              backgroundGradientFrom: theme.colors.surface,
-              backgroundGradientTo: theme.colors.surface,
-              decimalPlaces: 0,
-              color: (opacity = 1) => theme.colors.primary,
-              labelColor: (opacity = 1) => theme.colors.text,
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {
                 borderRadius: 16,
               },
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: theme.colors.primary,
-              },
             }}
-            bezier
-            style={styles.chart}
           />
         </Card.Content>
       </Card>
@@ -121,20 +103,32 @@ export const ReportsScreen = () => {
           <PieChart
             data={currentReport?.categoryDistribution?.map(category => ({
               name: category.name,
-              population: category.amount,
+              amount: category.amount,
               color: category.color,
-              legendFontColor: theme.colors.text,
-              legendFontSize: 12,
-            })) || []}
-            width={screenWidth - 48}
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 15,
+              x: 0,
+              y: 0,
+              padding: 16,
+              absolute: false,
+            }))}
+            width={screenWidth}
             height={220}
             chartConfig={{
-              color: (opacity = 1) => theme.colors.text,
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
             }}
-            accessor="population"
+            accessor="amount"
             backgroundColor="transparent"
             paddingLeft="15"
-            absolute
+            center={[10, 50]}
+            hasLegend={true}
           />
         </Card.Content>
       </Card>

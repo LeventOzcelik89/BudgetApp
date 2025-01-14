@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{60BDBB20-C315-4EC3-A89B-1825973D95C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetApp.API", "src\BudgetApp.API\BudgetApp.API.csproj", "{050C3D0D-5740-4B11-9DCB-8C620091E129}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetApp.API", "BudgetApp.API\BudgetApp.API.csproj", "{050C3D0D-5740-4B11-9DCB-8C620091E129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

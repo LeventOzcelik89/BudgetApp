@@ -1,12 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { transactionApi } from '../api/transactions';
+import { transactionsApi } from '../api/transactions';
 
 interface DashboardState {
   data: {
     totalIncome: number;
     totalExpense: number;
-    monthlyTrends: number[];
-    recentTransactions: any[];
+    weeklyTrends: number[];
+    categoryDistribution: Array<{
+      name: string;
+      amount: number;
+      color: string;
+    }>;
+    recentTransactions: Array<{
+      id: number;
+      description: string;
+      amount: number;
+      type: 'income' | 'expense';
+      categoryName: string;
+    }>;
   } | null;
   isLoading: boolean;
   error: string | null;
@@ -15,16 +26,21 @@ interface DashboardState {
 const initialState: DashboardState = {
   data: null,
   isLoading: false,
-  error: null,
+  error: null
 };
 
 export const fetchDashboardData = createAsyncThunk(
   'dashboard/fetchData',
   async () => {
-    const startDate = new Date(new Date().getFullYear(), 0, 1).toISOString();
-    const endDate = new Date().toISOString();
-    const response = await transactionApi.getSummary(startDate, endDate);
-    return response.data;
+    const transactions = await transactionsApi.getAll();
+    // Burada verileri işleyip dashboard formatına dönüştürebilirsiniz
+    return {
+      totalIncome: 0,
+      totalExpense: 0,
+      weeklyTrends: [0, 0, 0, 0],
+      categoryDistribution: [],
+      recentTransactions: []
+    };
   }
 );
 
@@ -36,6 +52,7 @@ const dashboardSlice = createSlice({
     builder
       .addCase(fetchDashboardData.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchDashboardData.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -43,9 +60,9 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardData.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || null;
+        state.error = action.error.message || 'Bir hata oluştu';
       });
-  },
+  }
 });
 
 export default dashboardSlice.reducer; 

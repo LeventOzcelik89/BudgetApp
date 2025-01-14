@@ -49,27 +49,20 @@ export const DashboardScreen = () => {
         <Card.Content>
           <Text style={styles.chartTitle}>Aylık Trend</Text>
           <LineChart
-            data={{
-              labels: ['1H', '2H', '3H', '4H'],
-              datasets: [{
-                data: data?.weeklyTrends || [0, 0, 0, 0]
-              }]
-            }}
-            width={screenWidth - 40}
+            data={data?.weeklyTrends.map((value, index) => ({ x: index + 1, y: value }))}
+            width={screenWidth - 32}
             height={220}
             chartConfig={{
-              backgroundColor: theme.colors.surface,
-              backgroundGradientFrom: theme.colors.surface,
-              backgroundGradientTo: theme.colors.surface,
-              decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
-              labelColor: (opacity = 1) => theme.colors.text,
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {
-                borderRadius: 16
-              }
+                borderRadius: 16,
+              },
             }}
             bezier
-            style={styles.chart}
           />
         </Card.Content>
       </Card>
@@ -81,19 +74,45 @@ export const DashboardScreen = () => {
           <PieChart
             data={data?.categoryDistribution?.map(item => ({
               name: item.name,
-              population: item.amount,
+              amount: item.amount,
               color: item.color,
-              legendFontColor: theme.colors.text,
-              legendFontSize: 12
-            })) || []}
-            width={screenWidth - 40}
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 15,
+              x: 10,
+              y: 10,
+              padding: 10,
+              paddingRight: 30,
+              chartConfig: {
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                  borderRadius: 16,
+                  padding: 8,
+                },
+                propsForDots: {
+                  r: '6',
+                  strokeWidth: '2',
+                  stroke: '#ffa726',
+                },
+              },
+            }))}
+            width={screenWidth - 32}
             height={220}
             chartConfig={{
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
             }}
-            accessor="population"
+            accessor="amount"
             backgroundColor="transparent"
             paddingLeft="15"
+            center={[10, 50]}
+            absolute
           />
         </Card.Content>
       </Card>

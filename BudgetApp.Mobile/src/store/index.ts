@@ -1,22 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import transactionReducer from './transactionSlice';
-import categoryReducer from './categorySlice';
-import budgetReducer from './budgetSlice';
 import dashboardReducer from './dashboardSlice';
+import transactionReducer from './transactionSlice';
+import budgetReducer from './budgetSlice';
 import reportReducer from './reportSlice';
-import settingsReducer from './settingsSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    transactions: transactionReducer,
-    categories: categoryReducer,
-    budgets: budgetReducer,
     dashboard: dashboardReducer,
-    reports: reportReducer,
-    settings: settingsReducer,
-  },
+    transactions: transactionReducer,
+    budgets: budgetReducer,
+    reports: reportReducer
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

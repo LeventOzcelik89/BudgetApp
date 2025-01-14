@@ -4,13 +4,20 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"]
-    }
+      "@/*": ["./src/*"]
+    },
+    "jsx": "react-native",
+    "types": [
+      "react",
+      "react-native"
+    ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "App.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

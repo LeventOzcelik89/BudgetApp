@@ -2,13 +2,7 @@
 git add .
 
 # Commit oluştur
-git commit -m "feat: Add multi-currency support for transactions
-
-- Added Currency entity and related configurations
-- Added UserSettings with currency preferences
-- Updated Transaction model with currency support
-- Added currency conversion support in TransactionService
-- Added currency information to transaction summaries"
+git commit -m "feat: Add xxx"
 
 # Remote'a push
 git push origin main
@@ -43,11 +37,14 @@ D:\Projects\BudgetApp\src\BudgetApp.API> dotnet run
 
 
 android hard reset
-D:\Projects\BudgetApp\BudgetApp> Remove-Item -Recurse -Force node_modules
-D:\Projects\BudgetApp\BudgetApp> Remove-Item package-lock.json
-Remove-Item -Recurse -Force .expo
-npm install
-npm start -- --reset-cache
+D:\Projects\BudgetApp\BudgetApp.Mobile>
+    Remove-Item -Recurse -Force node_modules
+    Remove-Item package-lock.json
+    Remove-Item -Recurse -Force .expo
+
+    npm install
+    --  npm start -- --reset-cache
+    npx expo start --clear
 
 //  Power Shell Scripti
 if (Test-Path node_modules) { Remove-Item -Recurse -Force node_modules }

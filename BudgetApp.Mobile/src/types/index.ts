@@ -34,16 +34,12 @@ export interface AuthState {
 // Transaction types
 export interface Transaction {
   id: number;
-  amount: number;
   description: string;
-  transactionDate: string;
+  amount: number;
   type: TransactionType;
-  categoryId?: number;
-  categoryName?: string;
-  currencyCode: string;
-  originalAmount: number;
-  convertedAmount: number;
-  exchangeRate: number;
+  categoryId: number;
+  categoryName: string;
+  date: string;
 }
 
 export interface CreateTransaction {
@@ -67,8 +63,8 @@ export interface TransactionSummary {
 export interface Category {
   id: number;
   name: string;
-  description: string;
-  type: CategoryType;
+  type: TransactionType;
+  color: string;
 }
 
 export interface CategorySummary {
@@ -85,16 +81,15 @@ export interface Budget {
   categoryName: string;
   plannedAmount: number;
   spentAmount: number;
-  remainingAmount: number;
-  spentPercentage: number;
   startDate: string;
   endDate: string;
+  spentPercentage: number;
 }
 
 // Enums
 export enum TransactionType {
-  Income = 1,
-  Expense = 2
+  Income = 'income',
+  Expense = 'expense'
 }
 
 export enum CategoryType {
@@ -112,25 +107,19 @@ export interface CurrencyInfo {
 }
 
 // Report types
-export interface MonthlyReportDto {
-  year: number;
-  month: number;
+export interface MonthlyReport {
   totalIncome: number;
   totalExpense: number;
   balance: number;
-  weeklyTrends: number[];
-  categories: CategoryReportDto[];
-  budgetComparisons: BudgetComparisonDto[];
+  trends: number[];
+  categoryDistribution: Array<{
+    name: string;
+    amount: number;
+    color: string;
+  }>;
 }
 
-export interface YearlyReportDto {
-  year: number;
-  totalIncome: number;
-  totalExpense: number;
-  balance: number;
-  monthlyTrends: number[];
-  topCategories: CategoryReportDto[];
-}
+export interface YearlyReport extends MonthlyReport {}
 
 export interface CategoryReportDto {
   categoryId: number;
