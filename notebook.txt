@@ -37,4 +37,21 @@ dotnet ef database update
 
 
 D:\Projects\BudgetApp\BudgetApp> npm run android
+D:\Projects\BudgetApp\BudgetApp> npx react-native run-android
+D:\Projects\BudgetApp\BudgetApp> npx expo start --android --clear
 D:\Projects\BudgetApp\src\BudgetApp.API> dotnet run 
+
+
+android hard reset
+D:\Projects\BudgetApp\BudgetApp> Remove-Item -Recurse -Force node_modules
+D:\Projects\BudgetApp\BudgetApp> Remove-Item package-lock.json
+Remove-Item -Recurse -Force .expo
+npm install
+npm start -- --reset-cache
+
+//  Power Shell Scripti
+if (Test-Path node_modules) { Remove-Item -Recurse -Force node_modules }
+if (Test-Path package-lock.json) { Remove-Item package-lock.json }
+npm install
+npm start -- --reset-cache
+
