@@ -1,0 +1,76 @@
+# Değişiklikleri staged'e ekle
+git add .
+
+# Commit oluştur
+git commit -m "feat: Add xxx"
+
+# Remote'a push
+git push origin main
+
+
+------------------------------------------------------------------------------------------------
+
+rm -r Migrations    --  Tüm migration klasörünü siler.
+dotnet ef migrations add InitialCreate
+dotnet ef migrations add AddCurrencySupport
+dotnet ef database update
+
+
+------------------------------------------------------------------------------------------------
+
+İleriki aşamalarda eklenebilecek özellikler:
+1. Döviz kuru servisi entegrasyonu
+2. Dosya upload/download işlemleri (makbuz, fatura vb.)
+3. Excel/PDF export
+4. Email servisi
+5. Cache mekanizması
+6. Logging mekanizması
+7. Unit testler
+8. API documentation (Swagger)
+
+
+
+--  D:\Projects\BudgetApp\BudgetApp> npm run android
+--  D:\Projects\BudgetApp\BudgetApp> npx react-native run-android
+--  D:\Projects\BudgetApp\BudgetApp> npx expo start --android --clear
+    D:\Projects\BudgetApp\src\BudgetApp.API> dotnet run 
+
+
+android hard reset
+D:\Projects\BudgetApp\BudgetApp.Mobile>
+    Remove-Item -Recurse -Force node_modules
+    Remove-Item package-lock.json
+    Remove-Item -Recurse -Force .expo
+
+    npm install
+    npm start -- --reset-cache
+    npx expo start --clear
+
+
+
+
+
+//  Power Shell Scripti
+if (Test-Path node_modules) { Remove-Item -Recurse -Force node_modules }
+if (Test-Path package-lock.json) { Remove-Item package-lock.json }
+npm install
+npm start -- --reset-cache
+
+
+npx react-native run-android
+
+
+--  package.json
+--  build al kütüphane hatasını çöz.    (   npx react-native run-android    )
+
+
+
+D:\Projects\BudgetApp\App\android> .\gradlew clean
+D:\Projects\BudgetApp\App> npx react-native run-android
+D:\Projects\BudgetApp\App> Remove-Item -Recurse -Force node_modules
+D:\Projects\BudgetApp\App> Remove-Item package-lock.json
+D:\Projects\BudgetApp\App> npm clean
+D:\Projects\BudgetApp\App> npm install
+
+
+npm view uglify-js version
