@@ -8,6 +8,7 @@ import { store } from '@/store';
 import { theme } from '@/theme';
 import { Navigation } from '@/navigation';
 
+
 export default function App() {
   return (
     <StoreProvider store={store}>
