@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BudgetApp.API.Models;
 using BudgetApp.API.Models.Common;
 using BudgetApp.API.Services;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 public class ApplicationDbContext : DbContext
 {
@@ -20,6 +21,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<Device> Devices { get; set; }
     public DbSet<UserSettings> UserSettings { get; set; }
     public DbSet<Currency> Currencies { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

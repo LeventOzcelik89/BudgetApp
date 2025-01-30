@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { theme } from '../../theme';
 
 interface InputProps {
   label: string;
@@ -13,7 +14,7 @@ interface InputProps {
   disabled?: boolean;
 }
 
-export const cInput = ({
+export const Input = ({
   label,
   value,
   onChangeText,
@@ -41,6 +42,7 @@ export const cInput = ({
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 16
+    marginBottom: 16,
+    backgroundColor: theme.colors.surface,
   },
-});
+}); 

@@ -2,18 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-interface InputProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  error?: string;
-  secureTextEntry?: boolean;
-  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-  disabled?: boolean;
-}
-
-export const cInput = ({
+const Input = ({
   label,
   value,
   onChangeText,
@@ -22,7 +11,7 @@ export const cInput = ({
   keyboardType = 'default',
   autoCapitalize = 'none',
   disabled = false,
-}: InputProps) => {
+}) => {
   return (
     <TextInput
       label={label}
@@ -41,6 +30,8 @@ export const cInput = ({
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: 16
+    marginBottom: 16,
   },
 });
+
+export default Input;
