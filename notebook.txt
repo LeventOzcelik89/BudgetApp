@@ -10,6 +10,8 @@ git push origin main
 
 ------------------------------------------------------------------------------------------------
 
+dotnet tool install --global dotnet-ef --version 9.*
+
 rm -r Migrations    --  Tüm migration klasörünü siler.
 dotnet ef migrations add InitialCreate
 dotnet ef migrations add AddCurrencySupport
@@ -52,3 +54,8 @@ if (Test-Path package-lock.json) { Remove-Item package-lock.json }
 npm install
 npm start -- --reset-cache
 
+
+Input bir türlü çalışmadı file tsx de olsa js de olsa fayda etmedi. 
+Doğrudan TextInput koyduğumda sorunsuz çalıştı ama Inpt.js import yöntemi başarısız oldu.
+State kullanımını çözemedim. init edemedim muhtemelen
+email kullanabiliyorum da ben state.email demek istiyorum.
